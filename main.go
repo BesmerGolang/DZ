@@ -25,7 +25,7 @@ func getSlice(ch chan int, wg *sync.WaitGroup) {
 	for i := 0; i < n; i++ {
 		slice[i] = rand.IntN(101)
 	}
-	for v := range slice {
+	for _, v := range slice {
 		ch <- v
 	}
 	close(ch)
