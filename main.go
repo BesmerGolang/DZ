@@ -28,9 +28,9 @@ func getSlice(ch chan []int, wg *sync.WaitGroup) {
 }
 func getSqare(ch chan []int, rCh chan []int, wg *sync.WaitGroup) {
 	defer wg.Done()
-	result := make([]int, 10)
+	result := make([]int, 0, 10)
 	for slice := range ch {
-		for num := range slice {
+		for _, num := range slice {
 			res := num * num
 			result = append(result, res)
 		}
