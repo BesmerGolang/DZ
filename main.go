@@ -9,32 +9,34 @@ import (
 func main() {
 	var wg sync.WaitGroup
 	wg.Add(2)
-	ch := make(chan []int)
-	resCh := make(chan []int)
+	ch := make(chan int)
+	resCh := make(chan int)
 	go getSlice(ch, &wg)
 	go getSqare(ch, resCh, &wg)
-	fmt.Print(<-resCh)
+	for num := range resCh {
+		fmt.Print(num)
+	}
 }
 
-func getSlice(ch chan []int, wg *sync.WaitGroup) {
+func getSlice(ch chan int, wg *sync.WaitGroup) {
 	defer wg.Done()
 	n := 10
 	slice := make([]int, n)
 	for i := 0; i < n; i++ {
-		slice[i] = rand.IntN(100)
+		slice[i] = rand.IntN(101)
 	}
-	ch <- slice
+	for _, v := range slice {
+		ch <- v
+	}
 	close(ch)
 }
-func getSqare(ch chan []int, rCh chan []int, wg *sync.WaitGroup) {
+func getSqare(ch chan int, rCh chan int, wg *sync.WaitGroup) {
 	defer wg.Done()
-	result := make([]int, 10)
-	for slice := range ch {
-		for num := range slice {
-			res := num * num
-			result = append(result, res)
-		}
+	for v := range ch {
+		rCh <- v * v
 	}
-	rCh <- result
+
 	close(rCh)
 }
+
+//dz
