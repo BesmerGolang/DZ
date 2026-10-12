@@ -38,3 +38,5 @@ func getSqare(ch chan []int, rCh chan []int, wg *sync.WaitGroup) {
 	rCh <- result
 	close(rCh)
 }
+
+//dz
